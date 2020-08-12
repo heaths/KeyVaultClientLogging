@@ -19,7 +19,18 @@ You need to add one or more of the following logging packages, or write your own
 
 The sample code in this project uses `Microsoft.Rest.ClientRuntime.Etw`, which has almost no overhead if no ETW listeners are configured, which you can do with tools like *logman.exe* (installed with Windows), [perfview.exe](https://github.com/microsoft/perfview/), and more.
 
-## Example
+### Code changes
+
+To enable logging, you have to add trace listeners to your code and enable logging:
+
+```csharp
+ServiceClientTracing.AddTracingInterceptor(new EtwTracingInterceptor());
+ServiceClientTracing.IsEnabled = true;
+```
+
+In contrast, using the new Azure.\* packages like those recommended above enables secure logging by default. That is, no personally-identifiable information (PII) is logged. You can simply skip making code changes and listen for `Azure` events, like `Azure-Core` for pipeline requests and responses. Read [Tracing Azure SDK for .NET](https://heaths.dev/azure/2020/02/04/trace-azure-sdk-for-net.html) for more information.
+
+## Tracing events
 
 ### PerfView
 
